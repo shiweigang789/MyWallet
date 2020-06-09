@@ -52,7 +52,6 @@ object LocaleHelper {
         val configuration = Configuration()
         configuration.setLocale(locale)
         configuration.setLayoutDirection(locale)
-        configuration.setLayoutDirection(locale)
 
         return context.createConfigurationContext(configuration)
     }
