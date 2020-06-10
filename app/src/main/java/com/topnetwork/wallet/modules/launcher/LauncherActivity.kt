@@ -25,7 +25,7 @@ class LauncherActivity : AppCompatActivity() {
 
         viewModel.openWelcomeModule.observe(this, Observer {
 //            IntroModule.start(this)
-            finish()
+//            finish()
         })
 
         viewModel.openMainModule.observe(this, Observer {
@@ -34,7 +34,7 @@ class LauncherActivity : AppCompatActivity() {
 //                val intent = Intent(this, TorConnectionActivity::class.java)
 //                startActivity(intent)
 //            }
-            finish()
+//            finish()
         })
 
         viewModel.openUnlockModule.observe(this, Observer {
@@ -54,7 +54,7 @@ class LauncherActivity : AppCompatActivity() {
         })
 
         viewModel.closeApplication.observe(this, Observer {
-            finishAffinity()
+//            finishAffinity()
         })
 
     }
