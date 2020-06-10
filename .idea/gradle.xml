@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/components/icons" />
             <option value="$PROJECT_DIR$/components/keystore" />
             <option value="$PROJECT_DIR$/components/languageswitcher" />
+            <option value="$PROJECT_DIR$/components/pin" />
             <option value="$PROJECT_DIR$/components/views" />
             <option value="$PROJECT_DIR$/core" />
           </set>

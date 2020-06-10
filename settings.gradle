@@ -1,4 +1,4 @@
 include ':app', ':core'
 include ':components:views', ':components:icons', ':components:languageswitcher',
-        ':components:keystore', ':components:chartview', ':components:currencyswitcher'
+        ':components:keystore', ':components:chartview', ':components:currencyswitcher', ':components:pin'
 rootProject.name = 'NewWallet'
