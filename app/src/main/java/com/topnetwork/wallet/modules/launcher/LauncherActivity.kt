@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.topnetwork.pin.PinModule
+import com.topnetwork.wallet.R
+import com.topnetwork.wallet.modules.intro.IntroModule
 
 /**
  * @FileName     : LauncherActivity
@@ -19,13 +21,12 @@ class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProvider(this).get(LaunchViewModel::class.java)
         viewModel.init()
 
         viewModel.openWelcomeModule.observe(this, Observer {
-//            IntroModule.start(this)
-//            finish()
+            IntroModule.start(this)
+            finish()
         })
 
         viewModel.openMainModule.observe(this, Observer {

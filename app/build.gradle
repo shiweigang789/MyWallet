@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 Properties buildProperties = new Properties()
 buildProperties.load(new BufferedReader(new InputStreamReader(new FileInputStream("app/confs/wallet.properties"), "UTF8")))
@@ -11,24 +10,77 @@ androidExtensions {
     experimental = true
 }
 
+def computeVersionCode() {
+    ext.buildNumber = System.getenv("BUILD_NUMBER") ?: 24
+    return "$buildNumber".toInteger()
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.topnetwork.wallet"
+        applicationId buildProperties.get("application_id")
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
+        versionCode computeVersionCode()
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         resValue "string", "localizations", buildProperties.get("localizations")
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
         }
+        sourceSets {
+            //数据库概要、记录存放位置
+            androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+        }
+
+        lintOptions {
+            checkReleaseBuilds false
+        }
+    }
+
+    signingConfigs {
+        hockeyApp {
+            storeFile file("./test.keystore")
+            storePassword "testKeystore123"
+
+            keyAlias "testKeystore"
+            keyPassword "testKeystore123"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            resValue "string", "infuraProjectId", "2a1306f1d12f4c109a4d4fb9be46b02e"
+            resValue "string", "infuraSecretKey", "fc479a9290b64a84a15fa6544a130218"
+            resValue "string", "etherscanKey", "GKNHXT22ED7PRVCKZATFZQD1YI7FK9AAYE"
+            resValue "string", "is_release", "false"
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "infuraProjectId", "5bf760228fcd47bb8d277dba49b7b369"
+            resValue "string", "infuraSecretKey", "7b81c992c98d4e60aaa8a0ef9acff2be"
+            resValue "string", "etherscanKey", "TTH1114D5VD5ZMCJZ4B74SGIDRCGSKWGX9"
+            resValue "string", "is_release", "true"
+        }
+//        hockeyApp {
+//            signingConfig signingConfigs.hockeyApp
+//            debuggable true
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            resValue "string", "infuraProjectId", "2a1306f1d12f4c109a4d4fb9be46b02e"
+//            resValue "string", "infuraSecretKey", "fc479a9290b64a84a15fa6544a130218"
+//            resValue "string", "etherscanKey", "GKNHXT22ED7PRVCKZATFZQD1YI7FK9AAYE"
+//            resValue "string", "is_release", "false"
+//        }
     }
 
     flavorDimensions "network"
@@ -55,7 +107,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "androidx.preference:preference-ktx:1.1.0"
+    implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
 
     implementation project(':core')
     implementation project(':components:views')
@@ -81,4 +134,13 @@ dependencies {
     // Wallet kits
     implementation 'com.github.horizontalsystems:bitcoin-kit-android:a9c8931'
     implementation 'com.github.horizontalsystems:xrates-kit-android:37f988f'
+
+    // Room
+    def room_version = '2.2.4'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    //ViewPager circle indicator
+    implementation 'me.relex:circleindicator:2.1.4'
 }

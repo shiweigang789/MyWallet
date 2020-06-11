@@ -6,3 +6,5 @@ class WrongAccountTypeForThisProvider : Exception()
 class LocalizedException(val errorTextRes: Int) : Exception()
 class InvalidMnemonicWordsCountException : Exception()
 class AdapterErrorWrongParameters(override val message: String) : Exception()
+
+

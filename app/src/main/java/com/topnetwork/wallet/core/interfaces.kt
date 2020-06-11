@@ -2,7 +2,6 @@ package com.topnetwork.wallet.core
 
 import android.content.Context
 import android.text.SpannableString
-import com.topnetwork.chartview.ChartView
 import com.topnetwork.wallet.entities.*
 import com.topnetwork.wallet.modules.balance.BalanceSortType
 import com.topnetwork.wallet.modules.send.SendModule
@@ -10,6 +9,7 @@ import io.horizontalsystems.core.entities.AppVersion
 import io.horizontalsystems.core.entities.Currency
 import io.horizontalsystems.xrateskit.entities.ChartType
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import java.math.BigDecimal
 
 /**
@@ -87,6 +87,32 @@ interface IAppConfigProvider {
     val communicationSettings: List<CommunicationSetting>
 }
 
+interface IAccountsStorage {
+    val isAccountsEmpty: Boolean
+
+    fun allAccounts(): List<Account>
+    fun save(account: Account)
+    fun update(account: Account)
+    fun delete(id: String)
+    fun getNonBackedUpCount(): Flowable<Int>
+    fun clear()
+    fun getDeletedAccountIds(): List<String>
+    fun clearDeleted()
+}
+
+interface IAccountCleaner {
+    fun clearAccounts(accountIds: List<String>)
+    fun clearAccount(coinType: CoinType, accountId: String)
+}
+
+interface IWalletStorage {
+    fun wallets(accounts: List<Account>): List<Wallet>
+    fun enabledCoins(): List<Coin>
+    fun save(wallets: List<Wallet>)
+    fun delete(wallets: List<Wallet>)
+    fun wallet(account: Account, coin: Coin): Wallet?
+}
+
 interface IAppNumberFormatter {
     fun format(coinValue: CoinValue, explicitSign: Boolean = false, realNumber: Boolean = false, trimmable: Boolean = false): String?
     fun format(currencyValue: CurrencyValue, showNegativeSign: Boolean = true, trimmable: Boolean = false, canUseLessSymbol: Boolean = true): String?
@@ -95,6 +121,25 @@ interface IAppNumberFormatter {
     fun formatForTransactions(context: Context, currencyValue: CurrencyValue, isIncoming: Boolean, canUseLessSymbol: Boolean, trimmable: Boolean): SpannableString
     fun format(value: Double, showSign: Boolean = false, precision: Int = 8): String
     fun format(value: BigDecimal, precision: Int): String?
+}
+
+interface IEnabledWalletStorage {
+    val enabledWallets: List<EnabledWallet>
+    fun save(enabledWallets: List<EnabledWallet>)
+    fun delete(enabledWallets: List<EnabledWallet>)
+    fun deleteAll()
+}
+
+interface IWalletManager {
+    val wallets: List<Wallet>
+    val walletsUpdatedObservable: Observable<List<Wallet>>
+    fun wallet(coin: Coin): Wallet?
+
+    fun loadWallets()
+    fun enable(wallets: List<Wallet>)
+    fun save(wallets: List<Wallet>)
+    fun delete(wallets: List<Wallet>)
+    fun clear()
 }
 
 enum class FeeRatePriority(val value: Int) {
