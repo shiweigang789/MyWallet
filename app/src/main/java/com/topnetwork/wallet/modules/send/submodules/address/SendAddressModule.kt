@@ -1,5 +1,11 @@
 package com.topnetwork.wallet.modules.send.submodules.address
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.topnetwork.wallet.core.App
+import com.topnetwork.wallet.entities.Coin
+import com.topnetwork.wallet.modules.send.SendModule
+import com.topnetwork.wallet.ui.helpers.TextHelper
 import java.math.BigDecimal
 
 /**
@@ -37,6 +43,7 @@ object SendAddressModule {
 
         @Throws
         fun validAddress(): String
+
         fun didScanQrCode(address: String)
     }
 
@@ -51,6 +58,26 @@ object SendAddressModule {
 
     open class ValidationError : Exception() {
         class InvalidAddress : ValidationError()
+    }
+
+    class Factory(
+        private val coin: Coin,
+        private val editable: Boolean,
+        private val sendHandler: SendModule.ISendHandler
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+            val view = SendAddressView()
+            val addressParser = App.addressParserFactory.parser(coin)
+            val interactor = SendAddressInteractor(TextHelper, addressParser)
+            val presenter = SendAddressPresenter(view, editable, interactor)
+
+            interactor.delegate = presenter
+            sendHandler.addressModule = presenter
+
+            return presenter as T
+        }
     }
 
 }

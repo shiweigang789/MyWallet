@@ -7,9 +7,13 @@ import com.topnetwork.wallet.modules.balance.BalanceSortType
 import com.topnetwork.wallet.modules.send.SendModule
 import io.horizontalsystems.core.entities.AppVersion
 import io.horizontalsystems.core.entities.Currency
+import io.horizontalsystems.xrateskit.entities.ChartInfo
 import io.horizontalsystems.xrateskit.entities.ChartType
+import io.horizontalsystems.xrateskit.entities.CryptoNews
+import io.horizontalsystems.xrateskit.entities.MarketInfo
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 import java.math.BigDecimal
 
 /**
@@ -50,6 +54,16 @@ interface ILocalStorage {
 
 interface IChartTypeStorage {
     var chartType: ChartType?
+}
+
+interface IClipboardManager {
+    fun copyText(text: String)
+    fun getCopiedText(): String
+    val hasPrimaryClip: Boolean
+}
+
+interface IAddressParser {
+    fun parse(paymentAddress: String): AddressData
 }
 
 interface IAccountManager {
@@ -150,4 +164,17 @@ enum class FeeRatePriority(val value: Int) {
     companion object {
         fun valueOf(value: Int): FeeRatePriority = values().find { it.value == value } ?: MEDIUM
     }
+}
+
+interface IRateManager {
+    fun set(coins: List<String>)
+    fun marketInfo(coinCode: String, currencyCode: String): MarketInfo?
+    fun getLatestRate(coinCode: String, currencyCode: String): BigDecimal?
+    fun marketInfoObservable(coinCode: String, currencyCode: String): Observable<MarketInfo>
+    fun marketInfoObservable(currencyCode: String): Observable<Map<String, MarketInfo>>
+    fun historicalRate(coinCode: String, currencyCode: String, timestamp: Long): Single<BigDecimal>
+    fun chartInfo(coinCode: String, currencyCode: String, chartType: ChartType): ChartInfo?
+    fun chartInfoObservable(coinCode: String, currencyCode: String, chartType: ChartType): Observable<ChartInfo>
+    fun getCryptoNews(coinCode: String): Single<List<CryptoNews>>
+    fun refresh()
 }

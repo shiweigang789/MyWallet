@@ -11,6 +11,7 @@ import com.topnetwork.languageswitcher.LanguageSettingsActivity
 import com.topnetwork.pin.PinComponent
 import com.topnetwork.pin.core.SecureStorage
 import com.topnetwork.wallet.BuildConfig
+import com.topnetwork.wallet.core.factories.AddressParserFactory
 import com.topnetwork.wallet.core.managers.*
 import com.topnetwork.wallet.core.storage.AccountsStorage
 import com.topnetwork.wallet.core.storage.AppDatabase
@@ -69,7 +70,7 @@ class App : CoreApp() {
             keyStoreManager = this
             keyProvider = this
         }
-
+        addressParserFactory = AddressParserFactory()
         systemInfoManager = SystemInfoManager()
         encryptionManager = EncryptionManager(keyProvider)
         secureStorage = SecureStorage(encryptionManager)
@@ -103,6 +104,7 @@ class App : CoreApp() {
 
         lateinit var accountsStorage: IAccountsStorage
         lateinit var enabledWalletsStorage: IEnabledWalletStorage
+        lateinit var addressParserFactory: AddressParserFactory
 
         lateinit var accountCleaner: IAccountCleaner
 
