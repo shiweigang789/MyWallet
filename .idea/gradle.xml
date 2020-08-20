@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/bitcoinjcore" />
             <option value="$PROJECT_DIR$/components" />
             <option value="$PROJECT_DIR$/components/chartview" />
             <option value="$PROJECT_DIR$/components/currencyswitcher" />
@@ -18,6 +19,11 @@
             <option value="$PROJECT_DIR$/components/pin" />
             <option value="$PROJECT_DIR$/components/views" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/hd-wallet-kit" />
+            <option value="$PROJECT_DIR$/hdwalletkit" />
+            <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib/bitcoincore" />
+            <option value="$PROJECT_DIR$/tokencore-master" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

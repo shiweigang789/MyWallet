@@ -1,9 +1,14 @@
 package com.topnetwork.wallet.modules.send.submodules.amount
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.topnetwork.wallet.core.App
 import com.topnetwork.wallet.entities.CoinValue
 import com.topnetwork.wallet.entities.CurrencyValue
+import com.topnetwork.wallet.entities.Wallet
 import com.topnetwork.wallet.modules.send.SendModule
 import java.math.BigDecimal
+import kotlin.math.min
 
 /**
  * @FileName     : SendAmountModule
@@ -85,4 +90,28 @@ object SendAmountModule {
         class TooFewAmount(val minimumAmount: SendModule.AmountInfo?) : ValidationError()
         class MaxAmountLimit(val maximumAmount: SendModule.AmountInfo?) : ValidationError()
     }
+
+//    class Factory(private val wallet: Wallet,
+//                  private val sendHandler: SendModule.ISendHandler) : ViewModelProvider.Factory {
+//        @Suppress("UNCHECKED_CAST")
+//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+
+//            val view = SendAmountView()
+//            val coinDecimal = min(wallet.coin.decimal, App.appConfigProvider.maxDecimal)
+//            val currencyDecimal = App.appConfigProvider.fiatDecimal
+//            val baseCurrency = App.currencyManager.baseCurrency
+//
+//            val interactor = SendAmountInteractor(baseCurrency, App.xRateManager, App.localStorage, wallet.coin, App.backgroundManager)
+//            val sendAmountPresenterHelper =
+//                SendAmountPresenterHelper(App.numberFormatter, wallet.coin, baseCurrency, coinDecimal,
+//                    currencyDecimal)
+//            val presenter = SendAmountPresenter(view, interactor, sendAmountPresenterHelper, wallet.coin, baseCurrency)
+//
+//            sendHandler.amountModule = presenter
+//            interactor.delegate = presenter
+//
+//            return presenter as T
+//        }
+//    }
+
 }
