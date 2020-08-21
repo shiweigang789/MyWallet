@@ -1,4 +1,4 @@
-include ':app', ':core', ':hdwalletkit', ':hd-wallet-kit', ':bitcoinjcore', ':tokencore-master'
+include ':app', ':core', ':hdwalletkit', ':hd-wallet-kit', ':bitcoinjcore', ':tokencore-master', ':mnemonic-sdk-master'
 include ':components:views', ':components:icons', ':components:languageswitcher',
         ':components:keystore', ':components:chartview', ':components:currencyswitcher', ':components:pin'
 

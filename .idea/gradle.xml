@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/hdwalletkit" />
             <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/lib/bitcoincore" />
+            <option value="$PROJECT_DIR$/mnemonic-sdk-master" />
             <option value="$PROJECT_DIR$/tokencore-master" />
           </set>
         </option>
